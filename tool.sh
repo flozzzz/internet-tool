@@ -64,6 +64,60 @@ traceroute_menu() {
   done
 }
 
+portcheck_menu() {
+  while true; do
+      clear
+      echo "=== Port Check ==="
+      echo
+      echo "Enter host"
+      echo "0) Back"
+      echo
+
+      read -p "> " target
+      if [[ "$target" == "0" ]]; then
+        break
+      fi
+
+      read -p  "Enter port: " port
+
+             if nc -z -w 3 "$target" "$port" 2>/dev/null; then
+            echo "Port $port is OPEN"
+        else
+            echo "Port $port is CLOSED or unreachable"
+        fi
+
+
+     read -p "Press Enter to continue..."
+
+  done
+}
+
+
+httpcheck_menu() {
+  while true; do
+      clear
+      echo "=== HTTP check ==="
+      echo
+      echo "Enter URL to HTTP check"
+      echo "0) Back"
+      echo
+
+
+      read -p "> " url
+      if [[ "$url" == "0" ]]; then
+        break
+      fi
+
+      curl -s -o /dev/null \
+       -w "Status: %{http_code}\nTime: %{time_total}s\n" \
+       "$url"
+
+      echo
+     read -p "Press Enter to continue..."
+
+  done
+}
+
 PS3="Select the operation: "
 
 select opt in Ping "DNS lookup" Traceroute "Port Check" "HTTP Check" "Network Interfaces" "Network Diagnostics" Exit
@@ -82,11 +136,11 @@ do
             ;;
 
         "Port Check")
-            echo "Port Check"
+            portcheck_menu
             ;;
 
         "HTTP Check")
-            echo "HTTP Check"
+            httpcheck_menu
             ;;
 
         "Network Interfaces")
