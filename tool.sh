@@ -118,11 +118,15 @@ httpcheck_menu() {
   done
 }
 
+echo "--------------------------------------------"
+echo "|             Internet tool                |"
+echo "--------------------------------------------"
+
 PS3="Select the operation: "
 
 select opt in Ping "DNS lookup" Traceroute "Port Check" "HTTP Check" "Network Interfaces" "Network Diagnostics" Exit
 do
-    case $opt in
+   case $opt in
         Ping)
             ping_menu
             ;;
